@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TradeHub - Platform Jual Beli Online</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav>
+      <div class="nav-container">
+        <a href="index.html" class="nav-brand">🛒 TradeHub</a>
+        <ul class="nav-links">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="#products">Produk</a></li>
+          <li><a href="#" onclick="openModal('loginModal')">Login</a></li>
+          <li><a href="#" onclick="openModal('registerModal')">Daftar</a></li>
+          <li><a href="admin/dashboard.html">Admin Panel</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1 class="hero-title">
+            Belanja Dengan Mudah,
+            <span class="gradient-text">Hemat Lebih Banyak</span>
+          </h1>
+          <p class="hero-subtitle">
+            Platform e-commerce terpercaya dengan jutaan produk pilihan dari
+            seller terbaik
+          </p>
+          <div class="hero-buttons">
+            <button
+              class="btn btn-primary btn-large"
+              onclick="
+                document
+                  .getElementById('products')
+                  .scrollIntoView({ behavior: 'smooth' })
+              "
+            >
+              Jelajahi Produk
+            </button>
+            <button
+              class="btn btn-outline btn-large"
+              onclick="openModal('registerModal')"
+            >
+              Mulai Berjualan
+            </button>
+          </div>
+        </div>
+        <div class="hero-illustration">
+          <div class="hero-emoji">🛍️</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+      <div class="container">
+        <h2 class="section-title">Kenapa Pilih TradeHub?</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">✨</div>
+            <h3>Produk Berkualitas</h3>
+            <p>Ribuan produk pilihan dengan jaminan kualitas terbaik</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🚚</div>
+            <h3>Pengiriman Cepat</h3>
+            <p>Gratis ongkir untuk pembelian tertentu ke seluruh nusantara</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💳</div>
+            <h3>Pembayaran Aman</h3>
+            <p>Berbagai metode pembayaran dengan enkripsi tingkat tinggi</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3>Jaminan Uang Kembali</h3>
+            <p>Garansi 100% uang kembali jika tidak puas dengan produk</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">👥</div>
+            <h3>Support 24/7</h3>
+            <p>Tim customer service siap membantu kapan saja</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⭐</div>
+            <h3>Review Terpercaya</h3>
+            <p>Ribuan review dari pembeli yang puas</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+      <!-- Search Bar -->
+      <div class="search-section">
+        <h2 class="section-title">Temukan Produk Impianmu</h2>
+        <div class="search-bar">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Cari produk, brand, atau kategori..."
+            onkeyup="searchProducts()"
+          />
+          <button class="btn btn-primary" onclick="searchProducts()">
+            🔍 Cari
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Section -->
+      <div class="filter-section">
+        <h3>Filter Produk</h3>
+        <div class="filter-row">
+          <div class="form-group">
+            <label for="categoryFilter">Kategori</label>
+            <select id="categoryFilter" onchange="filterProducts()">
+              <option value="">Semua Kategori</option>
+              <option value="elektronik">Elektronik</option>
+              <option value="fashion">Fashion</option>
+              <option value="rumah-tangga">Rumah Tangga</option>
+              <option value="olahraga">Olahraga</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="minPrice">Harga Minimum</label>
+            <input
+              type="number"
+              id="minPrice"
+              placeholder="0"
+              onchange="filterProducts()"
+            />
+          </div>
+          <div class="form-group">
+            <label for="maxPrice">Harga Maksimum</label>
+            <input
+              type="number"
+              id="maxPrice"
+              placeholder="1000000"
+              onchange="filterProducts()"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <section id="products">
+        <h2 style="margin-bottom: 2rem; color: var(--dark)">
+          📦 Produk Tersedia
+        </h2>
+        <div class="cards-grid" id="productsContainer">
+          <!-- Products akan dimuat dari JavaScript -->
+        </div>
+      </section>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal('loginModal')">
+            &times;
+          </button>
+          <h2>Login</h2>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input
+              type="email"
+              id="loginEmail"
+              placeholder="Masukkan email anda"
+            />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              placeholder="Masukkan password anda"
+            />
+          </div>
+          <button class="btn btn-primary btn-block" onclick="handleLogin()">
+            Login
+          </button>
+          <p style="text-align: center; margin-top: 1rem">
+            Belum punya akun?
+            <a href="#" onclick="switchModal('loginModal', 'registerModal')"
+              >Daftar di sini</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal('registerModal')">
+            &times;
+          </button>
+          <h2>Daftar Akun</h2>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="registerName">Nama Lengkap</label>
+            <input
+              type="text"
+              id="registerName"
+              placeholder="Masukkan nama anda"
+            />
+          </div>
+          <div class="form-group">
+            <label for="registerEmail">Email</label>
+            <input
+              type="email"
+              id="registerEmail"
+              placeholder="Masukkan email anda"
+            />
+          </div>
+          <div class="form-group">
+            <label for="registerPassword">Password</label>
+            <input
+              type="password"
+              id="registerPassword"
+              placeholder="Masukkan password anda"
+            />
+          </div>
+          <div class="form-group">
+            <label for="registerConfirm">Konfirmasi Password</label>
+            <input
+              type="password"
+              id="registerConfirm"
+              placeholder="Konfirmasi password anda"
+            />
+          </div>
+          <button class="btn btn-success btn-block" onclick="handleRegister()">
+            Daftar
+          </button>
+          <p style="text-align: center; margin-top: 1rem">
+            Sudah punya akun?
+            <a href="#" onclick="switchModal('registerModal', 'loginModal')"
+              >Login di sini</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Product Modal -->
+    <div id="detailModal" class="modal">
+      <div class="modal-content" style="max-width: 600px">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal('detailModal')">
+            &times;
+          </button>
+          <h2 id="detailProductName">Detail Produk</h2>
+        </div>
+        <div class="modal-body">
+          <div class="product-image" id="detailProductImage">📱</div>
+          <div class="product-price" id="detailProductPrice">Rp 0</div>
+          <p id="detailProductDescription"></p>
+          <p>
+            <strong>Penjual:</strong> <span id="detailProductSeller"></span>
+          </p>
+          <p>
+            <strong>Rating:</strong> <span id="detailProductRating">⭐ 0</span>
+          </p>
+          <p><strong>Stok:</strong> <span id="detailProductStock">0</span></p>
+          <button class="btn btn-primary btn-block" onclick="buyProduct()">
+            Beli Sekarang
+          </button>
+          <button
+            class="btn btn-outline btn-block"
+            onclick="closeModal('detailModal')"
+          >
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2026 TradeHub - Platform Jual Beli Online Terpercaya</p>
+      <p>Hubungi kami: support@tradehub.com | WA: +62 8xx xxxx xxxx</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

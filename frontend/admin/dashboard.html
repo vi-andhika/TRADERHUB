@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - TradeHub</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <style>
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 60px;
+        width: 250px;
+        height: calc(100vh - 60px);
+        background: #2d3748;
+        color: white;
+        overflow-y: auto;
+        padding: 0;
+      }
+
+      .sidebar ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .sidebar li {
+        margin: 0;
+      }
+
+      .sidebar a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 1rem 1.5rem;
+        border-left: 3px solid transparent;
+        transition: all 0.3s;
+      }
+
+      .sidebar a:hover,
+      .sidebar a.active {
+        background-color: #667eea;
+        border-left-color: #764ba2;
+      }
+
+      .main-content {
+        margin-left: 250px;
+        padding: 2rem;
+        margin-top: 60px;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid var(--primary);
+      }
+
+      .stat-card h3 {
+        color: #718096;
+        font-size: 0.95em;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-card .value {
+        font-size: 2em;
+        font-weight: bold;
+        color: var(--primary);
+      }
+
+      .content-section {
+        display: none;
+      }
+
+      .content-section.active {
+        display: block;
+      }
+
+      .section-title {
+        color: var(--dark);
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 0;
+          left: -250px;
+        }
+
+        .main-content {
+          margin-left: 0;
+        }
+
+        .sidebar.show {
+          left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav>
+      <div class="nav-container">
+        <a href="../index.html" class="nav-brand">🛒 TradeHub Admin</a>
+        <ul class="nav-links">
+          <li><a href="../index.html">Back to Store</a></li>
+          <li><a href="#" onclick="handleLogout()">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <ul>
+        <li>
+          <a href="#" onclick="showSection('dashboard')" class="nav-item active"
+            >📊 Dashboard</a
+          >
+        </li>
+        <li>
+          <a href="#" onclick="showSection('products')" class="nav-item"
+            >📦 Produk</a
+          >
+        </li>
+        <li>
+          <a href="#" onclick="showSection('orders')" class="nav-item"
+            >🛍️ Pesanan</a
+          >
+        </li>
+        <li>
+          <a href="#" onclick="showSection('users')" class="nav-item"
+            >👥 Pengguna</a
+          >
+        </li>
+        <li>
+          <a href="#" onclick="showSection('transactions')" class="nav-item"
+            >💳 Transaksi</a
+          >
+        </li>
+        <li>
+          <a href="#" onclick="showSection('settings')" class="nav-item"
+            >⚙️ Pengaturan</a
+          >
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Dashboard Section -->
+      <div id="dashboard" class="content-section active">
+        <h2 class="section-title">📊 Dashboard</h2>
+
+        <div class="dashboard-grid">
+          <div class="stat-card">
+            <h3>Total Produk</h3>
+            <div class="value" id="totalProducts">8</div>
+          </div>
+          <div class="stat-card" style="border-left-color: var(--success)">
+            <h3>Penjualan Hari Ini</h3>
+            <div class="value" style="color: var(--success)" id="todaySales">
+              Rp 12.5M
+            </div>
+          </div>
+          <div class="stat-card" style="border-left-color: var(--info)">
+            <h3>Total Pengguna</h3>
+            <div class="value" style="color: var(--info)" id="totalUsers">
+              245
+            </div>
+          </div>
+          <div class="stat-card" style="border-left-color: var(--warning)">
+            <h3>Pesanan Pending</h3>
+            <div class="value" style="color: var(--warning)" id="pendingOrders">
+              12
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 2rem; margin-bottom: 1rem">
+          📈 Aktivitas Terkini
+        </h3>
+        <div
+          style="
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          "
+        >
+          <p>✅ 5 produk baru ditambahkan hari ini</p>
+          <p>✅ 23 transaksi berhasil diproses</p>
+          <p>✅ 3 pengguna baru mendaftar</p>
+          <p>⚠️ 2 pesanan membutuhkan perhatian</p>
+        </div>
+      </div>
+
+      <!-- Products Section -->
+      <div id="products" class="content-section">
+        <h2 class="section-title">📦 Manajemen Produk</h2>
+
+        <button
+          class="btn btn-primary mb-2"
+          onclick="openModal('productModal')"
+        >
+          + Tambah Produk Baru
+        </button>
+
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nama Produk</th>
+              <th>Kategori</th>
+              <th>Harga</th>
+              <th>Stok</th>
+              <th>Rating</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="productsTable">
+            <!-- Table rows akan dimuat dari JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Orders Section -->
+      <div id="orders" class="content-section">
+        <h2 class="section-title">🛍️ Manajemen Pesanan</h2>
+
+        <div class="filter-section">
+          <div class="filter-row">
+            <div class="form-group">
+              <label for="statusFilter">Status</label>
+              <select id="statusFilter" onchange="filterOrders()">
+                <option value="">Semua Status</option>
+                <option value="pending">Pending</option>
+                <option value="processing">Processing</option>
+                <option value="shipped">Shipped</option>
+                <option value="delivered">Delivered</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Pelanggan</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Tanggal</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTable">
+            <!-- Table rows akan dimuat dari JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Users Section -->
+      <div id="users" class="content-section">
+        <h2 class="section-title">👥 Manajemen Pengguna</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nama</th>
+              <th>Email</th>
+              <th>Telepon</th>
+              <th>Terdaftar</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="usersTable">
+            <!-- Table rows akan dimuat dari JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Transactions Section -->
+      <div id="transactions" class="content-section">
+        <h2 class="section-title">💳 Riwayat Transaksi</h2>
+
+        <div class="filter-section">
+          <div class="filter-row">
+            <div class="form-group">
+              <label for="paymentMethod">Metode Pembayaran</label>
+              <select id="paymentMethod" onchange="filterTransactions()">
+                <option value="">Semua Metode</option>
+                <option value="card">Kartu Kredit</option>
+                <option value="bank">Transfer Bank</option>
+                <option value="wallet">E-Wallet</option>
+                <option value="cod">COD</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tanggal</th>
+              <th>Jumlah</th>
+              <th>Metode</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="transactionsTable">
+            <!-- Table rows akan dimuat dari JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Settings Section -->
+      <div id="settings" class="content-section">
+        <h2 class="section-title">⚙️ Pengaturan</h2>
+
+        <div
+          style="
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+          "
+        >
+          <div class="form-group">
+            <label for="storeName">Nama Toko</label>
+            <input
+              type="text"
+              id="storeName"
+              value="TradeHub"
+              placeholder="Nama toko"
+            />
+          </div>
+          <div class="form-group">
+            <label for="storeEmail">Email Toko</label>
+            <input
+              type="email"
+              id="storeEmail"
+              value="support@tradehub.com"
+              placeholder="Email toko"
+            />
+          </div>
+          <div class="form-group">
+            <label for="storePhone">Nomor Telepon</label>
+            <input
+              type="text"
+              id="storePhone"
+              value="+62 8xx xxxx xxxx"
+              placeholder="Nomor telepon"
+            />
+          </div>
+          <div class="form-group">
+            <label for="storeAddress">Alamat Toko</label>
+            <textarea id="storeAddress" placeholder="Alamat toko">
+Jalan Merdeka No. 123, Jakarta</textarea
+            >
+          </div>
+          <button class="btn btn-primary" onclick="saveSettings()">
+            💾 Simpan Pengaturan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal('productModal')">
+            &times;
+          </button>
+          <h2>Tambah Produk Baru</h2>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="productName">Nama Produk</label>
+            <input type="text" id="productName" placeholder="Nama produk" />
+          </div>
+          <div class="form-group">
+            <label for="productCategory">Kategori</label>
+            <select id="productCategory">
+              <option value="elektronik">Elektronik</option>
+              <option value="fashion">Fashion</option>
+              <option value="rumah-tangga">Rumah Tangga</option>
+              <option value="olahraga">Olahraga</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="productPrice">Harga (Rp)</label>
+            <input type="number" id="productPrice" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label for="productStock">Stok</label>
+            <input type="number" id="productStock" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label for="productDesc">Deskripsi</label>
+            <textarea
+              id="productDesc"
+              placeholder="Deskripsi produk"
+            ></textarea>
+          </div>
+          <button class="btn btn-success btn-block" onclick="addProduct()">
+            ✅ Tambah Produk
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/admin.js"></script>
+  </body>
+</html>
